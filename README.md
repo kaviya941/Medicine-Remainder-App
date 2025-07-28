@@ -1,15 +1,16 @@
-💊 Medicine Reminder App (Flask)
+💊 MEDICINE REMAINDER APP (FLASK)
 
 A simple web-based medicine reminder system using Python Flask, SQLite, and APScheduler. Notifies users via browser alerts at specified times.
-
-🚀 Features
+______________________________________________________________________________________________________________________________________
+🚀 FEATURES
 
 Add & delete medicine reminders
 Choose time, days of week, and dosage
 Real-time browser notifications (alert popups)
 Lightweight SQLite backend
+__________________________________________________________________________________________________________________________________________
+🧰REQUIREMENTS
 
-🧰 Requirements
 Python 3.10+
 pip
 MySQL (optional) or SQLite (default)
