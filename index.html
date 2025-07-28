@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Medicine Reminder</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 800px;
+      margin: 40px auto;
+      background: #f7f9fc;
+      color: #333;
+    }
+    h1 { text-align: center; color: #444; }
+    form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    form > div { display: flex; flex-direction: column; }
+    form label { font-weight: bold; margin-bottom: 4px; }
+    form input, form textarea {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .days { display: flex; flex-wrap: wrap; gap: 10px; }
+    .days label { font-size: 0.9rem; }
+    .full { grid-column: 1 / -1; }
+    button {
+      padding: 10px;
+      background: #2e86de;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+    }
+    th { background: #f0f3f7; }
+    tr:hover { background: #f9fbff; }
+    form.delete { display: inline; }
+  </style>
+</head>
+<body>
+
+<h1>💊 Medicine Reminder</h1>
+
+<form action="/add" method="post">
+  <div>
+    <label>Medicine Name</label>
+    <input name="name" required>
+  </div>
+  <div>
+    <label>Dosage</label>
+    <input name="dosage" placeholder="e.g., 1 tablet" required>
+  </div>
+  <div>
+    <label>Time</label>
+    <input type="time" name="time" required>
+  </div>
+  <div class="days">
+    <label><input type="checkbox" name="days" value="MON">Mon</label>
+    <label><input type="checkbox" name="days" value="TUE">Tue</label>
+    <label><input type="checkbox" name="days" value="WED">Wed</label>
+    <label><input type="checkbox" name="days" value="THU">Thu</label>
+    <label><input type="checkbox" name="days" value="FRI">Fri</label>
+    <label><input type="checkbox" name="days" value="SAT">Sat</label>
+    <label><input type="checkbox" name="days" value="SUN">Sun</label>
+  </div>
+  <div class="full">
+    <label>Notes</label>
+    <textarea name="notes" rows="2"></textarea>
+  </div>
+  <div class="full">
+    <button type="submit">Add Reminder</button>
+  </div>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Medicine</th>
+      <th>Dosage</th>
+      <th>Time</th>
+      <th>Days</th>
+      <th>Notes</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in reminders %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td>{{ r.name }}</td>
+      <td>{{ r.dosage }}</td>
+      <td>{{ r.time }}</td>
+      <td>{{ r.days }}</td>
+      <td>{{ r.notes }}</td>
+      <td>
+        <form action="{{ url_for('delete', id=r.id) }}" method="post" class="delete">
+          <button>Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<script>
+  setInterval(async () => {
+    const res = await fetch('/api/notifications');
+    const list = await res.json();
+    list.forEach(n => {
+      alert(`⏰ Time for: ${n.name} (${n.dosage})\n${n.notes}`);
+    });
+  }, 15000);
+</script>
+
+</body>
+</html>
