@@ -12,5 +12,7 @@ ________________________________________________________________________________
 🧰REQUIREMENTS
 
 Python 3.10+
+
 pip
+
 MySQL (optional) or SQLite (default)
